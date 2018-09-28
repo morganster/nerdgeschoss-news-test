@@ -2,28 +2,67 @@ import linkConstants from '../constants/LinkConstants';
 
 const initialState = {
     requesting: false,
-    linkList: {
-        data: []
-    }
+    links: [],
+    link: {}
 };
 
 export function links(state = initialState, action) {
     switch (action.type) {
         case linkConstants.GET_ALL_REQUEST:
-            return Object.assign({}, state,{
+            return { ...state, ...{
                 requesting: true,
-                linkList: initialState.linkList
-           });
+           }};
         case linkConstants.GET_ALL_SUCCESS:
-            return Object.assign({}, state,{
+            return { ...state, ...{
                 requesting: false,
-                linkList: action.links
-            });
+                links: action.links.data
+            }};
         case linkConstants.GET_ALL_FAILURE:
-            return Object.assign({}, state,{
+            return { ...state,...{
                 requesting: false,
-                linkList: initialState.linkList
-            });
+                links: initialState.linkList
+            }};
+        case linkConstants.LIKE_REQUEST:
+            return { ...state, ...{
+                requesting: true,
+           }};
+        case linkConstants.LIKE_SUCCESS:
+            state.links[action.link].liked = true;
+            return { ...state, ...{
+                requesting: false,
+                links:  state.links
+            }};
+        case linkConstants.LIKE_FAILURE:
+            return { ...state,...{
+                requesting: false,
+            }};
+        case linkConstants.UNLIKE_REQUEST:
+            return { ...state, ...{
+                requesting: true,
+           }};
+        case linkConstants.UNLIKE_SUCCESS:
+            state.links[action.link].liked = false;
+            return { ...state, ...{
+                requesting: false,
+                links: state.links
+            }};
+        case linkConstants.UNLIKE_FAILURE:
+            return { ...state,...{
+                requesting: false,
+            }};
+        case linkConstants.GET_REQUEST:
+            return { ...state, ...{
+                requesting: true,
+           }};
+        case linkConstants.GET_SUCCESS:
+            return { ...state, ...{
+                requesting: false,
+                link: action.links.data
+            }};
+        case linkConstants.GET_FAILURE:
+            return { ...state,...{
+                requesting: false,
+            }};
         default:
             return state;
     }

@@ -3,12 +3,16 @@
     border: 1px solid #ccc;
     padding: 2rem;
     margin-bottom: 1rem;
-    &__header{
+    & .card-header{
         font-size: 1.5em;
         border-bottom: 1px solid #ccc;
     }
-    &__body{
+    & .card-body{
         padding-top: 1rem;
         font-size: 1em;
+    }
+    & .card-image{
+        width: 5rem;
+        border-radius: 0.3rem;
     }
 }

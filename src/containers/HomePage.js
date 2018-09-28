@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import LinkCard from '../components/link-card/LinkCard';
+import { bindActionCreators } from 'redux';
 
 import linkActions from '../actions/LinkActions';
 
@@ -10,9 +11,10 @@ class Home extends React.Component {
         super(props);
         this.updateLoggedInState = this.updateLoggedInState.bind(this);
         this.updateLoggedOutState = this.updateLoggedOutState.bind(this);
+        this.likeLink = this.likeLink.bind(this);
     }
     componentDidMount() {
-        this.props.dispatch(linkActions.getLinks());
+        this.props.actions.getLinks();
         window.fbAsyncInit = function () {
             window.FB.init({
                 appId: '238248640188977',
@@ -48,13 +50,18 @@ class Home extends React.Component {
         console.log('logged out');
     }
 
+    likeLink(id, e) {
+        console.log(e.target.checked);
+        if(e.target.checked) this.props.actions.likeLink(id);
+    }
+
     render() {
         const { links } = this.props;
         return (
             <div>
                 <div className='fb-login-button' data-max-rows='1' data-size='large' data-button-type='continue_with' data-show-faces='false' data-auto-logout-link='false' data-use-continue-as='false'></div>
-                {links.linkList.data.length > 0 && links.linkList.data.map((link) => {
-                    return (<LinkCard key={link.id} id={link.id} title={link.title} body={link.body}></LinkCard>);
+                {links.links.length > 0 && links.links.map((link) => {
+                    return (<LinkCard key={link.id} link={link} like={this.likeLink}></LinkCard>);
                 })}
             </div>
         );
@@ -62,7 +69,7 @@ class Home extends React.Component {
 }
 Home.propTypes = {
     links: PropTypes.object,
-    dispatch: PropTypes.func
+    actions: PropTypes.object
 };
 
 function mapStateToProps(state) {
@@ -72,6 +79,9 @@ function mapStateToProps(state) {
     };
 }
 
+function mapDispatchToProps(dispatch) {
+    return {actions: bindActionCreators(linkActions, dispatch)};
+}
 
-const connectedHomePage = connect(mapStateToProps)(Home);
+const connectedHomePage = connect(mapStateToProps, mapDispatchToProps)(Home);
 export { connectedHomePage as HomePage };
