@@ -1,4 +1,5 @@
 import linkConstants from '../constants/LinkConstants';
+import * as _ from 'lodash';
 
 const initialState = {
     requesting: false,
@@ -27,7 +28,7 @@ export function links(state = initialState, action) {
                 requesting: true,
            }};
         case linkConstants.LIKE_SUCCESS:
-            state.links[action.link].liked = true;
+            state.links[_.findKey(state.links, {id:action.like.id})].liked = true;
             return { ...state, ...{
                 requesting: false,
                 links:  state.links

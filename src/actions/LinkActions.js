@@ -16,12 +16,16 @@ export default linkActions;
 
 function getLinks() {
 
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        let config = {
+            headers: {}
+        };
+        if(getState().auth.bearer){
+            config.headers.Authorization = `bearer ${getState().auth.bearer}`;
+        }
         dispatch(request());
 
-        console.log(axios.defaults);
-
-        axios.get(linksApiUrl)
+        axios.get(linksApiUrl, config)
             .then(
                 links => {
                     dispatch(success(links));
@@ -105,23 +109,29 @@ function deleteLink(id) {
 }
 
 function likeLink(id) {
+    console.log('like a link',id);
+    return (dispatch, getState) => {
+        const config = {
+            headers: {
+                Authorization:`bearer ${getState().auth.bearer}`
+            }
+        };
 
-    return (dispatch) => {
         dispatch(request());
 
-        axios.post(`${linksApiUrl}/${id}/like`)
+        axios.post(`${linksApiUrl}/${id}/like`,null,config)
             .then(
-                links => {
-                    dispatch(success(links));
+                data => {
+                    dispatch(success({data, id}));
                 },
                 error => {
                     dispatch(failure(error));
                 });
     };
 
-    function request(links) { return { type: linkConstants.LIKE_REQUEST, links }; }
+    function request(like) { return { type: linkConstants.LIKE_REQUEST, like }; }
 
-    function success(links) { return { type: linkConstants.LIKE_SUCCESS, links }; }
+    function success(like) { return { type: linkConstants.LIKE_SUCCESS, like }; }
 
     function failure(error) { return { type: linkConstants.LIKE_FAILURE, error }; }
 }

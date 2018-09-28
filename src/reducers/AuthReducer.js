@@ -3,6 +3,7 @@ import AuthConstants from '../constants/AuthConstants';
 const initialState = {
     requesting: false,
     bearer: null,
+    userId: null,
     loggedIn: false,
 };
 
@@ -15,7 +16,8 @@ export function auth(state = initialState, action) {
         case AuthConstants.LOGIN_SUCCESS:
             return { ...state, ...{
                 requesting: false,
-                bearer: action.auth,
+                bearer: action.auth.data.id,
+                userId: action.auth.data.userId,
                 loggedIn: true,
             }};
         case AuthConstants.LOGIN_FAILURE:
@@ -30,6 +32,7 @@ export function auth(state = initialState, action) {
             return { ...state, ...{
                 requesting: false,
                 bearer: initialState.bearer,
+                userId: initialState.userId,
                 loggedIn: false,
             }};
         case AuthConstants.LOGOUT_FAILURE:
