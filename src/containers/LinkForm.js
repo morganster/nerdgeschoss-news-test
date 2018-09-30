@@ -31,18 +31,23 @@ class LinkForm extends React.Component {
             url: this.state.linkUrl
         };
         this.props.actions.saveLink(params);
+        this.setState({
+            linkUrl: ''
+        });
+
         event.preventDefault();
     }
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Link Url:
-          <input type='text' name='linkUrl' value={this.state.linkUrl} onChange={this.handleInputChange} />
-                </label>
-                <input type='submit' value='Submit' />
-            </form>
+            <div className='float-left'>
+                <form onSubmit={this.handleSubmit} className='form-inline my-2'>
+                    <label>
+                        <input type='text' className='form-control mr-sm-2' placeholder='Link Url' name='linkUrl' value={this.state.linkUrl} onChange={this.handleInputChange} />
+                    </label>
+                    <input className='btn btn-outline-success my-2 my-sm-0' type='submit' value='Submit' />
+                </form>
+            </div>
         );
     }
 }

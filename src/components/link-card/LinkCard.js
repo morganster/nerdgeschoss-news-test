@@ -6,7 +6,7 @@ import { fixUrl } from '../../helpers/urlHelper';
 
 const LinkCard = ({link, like, deleteLink, showLike}) => {
     return (<div className='link-card' data-qa='link-card'>
-                {link.owned && <button className='btn btn-danger float-right' onClick={ e => deleteLink(link.id, e)}><i className='fa fa-times'></i></button>}
+                {link.owned && <button className='btn btn-danger btn-sm float-right' onClick={ e => deleteLink(link.id, e)}><i className='fa fa-times'></i></button>}
                             { showLike && <HeartButton className='float-left' link={link} liked={link.liked} doLike={like} />}
                 <div className='row'>
                     <div className='col-11'>

@@ -123,7 +123,6 @@ function deleteLink(id) {
 }
 
 function likeLink(link) {
-    console.log(link);
     return (dispatch, getState) => {
         const config = {
             headers: {
@@ -137,6 +136,7 @@ function likeLink(link) {
             .then(
                 data => {
                     dispatch(success({data, link}));
+                    dispatch(getLinks());
                 },
                 error => {
                     dispatch(failure(error));
@@ -164,6 +164,7 @@ function unLikeLink(link) {
             .then(
                 data => {
                     dispatch(success({data, link}));
+                    dispatch(getLinks());
                 },
                 error => {
                     dispatch(failure(error));

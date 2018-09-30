@@ -84,9 +84,11 @@ class Home extends React.Component {
         return (
             <div className='home-page'>
                 <NavBar>
-                    {!this.props.auth.loggedIn && <button className='fb-button' onClick={e => this.handleFbLogin(e)}>login</button>}
-                    {this.props.auth.loggedIn && <button className='fb-button' onClick={e => this.handleFbLogout(e)}>logout</button>}
                     { this.props.auth.loggedIn && <LinkFormPage />}
+                    <form className='form-inline my-2'>
+                        {!this.props.auth.loggedIn && <button className='fb-button float-right' onClick={e => this.handleFbLogin(e)}>login</button>}
+                        {this.props.auth.loggedIn && <button className='fb-button float-right' onClick={e => this.handleFbLogout(e)}>logout</button>}
+                    </form>
                 </NavBar>
                 <div className='container-fluid'>
 

@@ -12,12 +12,7 @@ const initialState = {
 };
 
 export function links(state = initialState, action) {
-    let grIndex = '';
-    let index = '';
-    function likeIndex(){
-        grIndex = _.findIndex(state.links , {date: moment(action.like.link.created_at).format('DD-MM-Y')});
-        index = _.findIndex(state.links[grIndex].links,{id:action.like.link.id});
-    }
+
     switch (action.type) {
         case linkConstants.GET_ALL_REQUEST:
             return { ...state, ...{
@@ -42,11 +37,8 @@ export function links(state = initialState, action) {
                 requesting: true,
            }};
         case linkConstants.LIKE_SUCCESS:
-            likeIndex();
-             state.links[grIndex].links[index].liked = true;
             return { ...state, ...{
                 requesting: false,
-                links:  state.links
             }};
         case linkConstants.LIKE_FAILURE:
             return { ...state,...{
@@ -57,11 +49,8 @@ export function links(state = initialState, action) {
                 requesting: true,
            }};
         case linkConstants.UNLIKE_SUCCESS:
-            likeIndex();
-            state.links[grIndex].links[index].liked = false;
             return { ...state, ...{
                 requesting: false,
-                links: state.links
             }};
         case linkConstants.UNLIKE_FAILURE:
             return { ...state,...{

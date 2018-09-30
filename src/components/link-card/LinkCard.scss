@@ -1,8 +1,8 @@
 .link-card{
     border-radius: 3px;
     border: 1px solid #ccc;
-    padding: 1rem 1.5rem;
-    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.3rem;
     position: relative;
     & .link-card-header{
         font-size: 1em;
@@ -12,8 +12,10 @@
         }
     }
     & .link-card-body{
-        padding-top: 1rem;
         font-size: 0.8em;
+        &__paragraph{
+            margin:0;
+        }
     }
     & .link-card-image{
         width: 5rem;
