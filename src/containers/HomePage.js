@@ -2,7 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import LinkCard from '../components/link-card/LinkCard';
+import NavBar from '../components/nav-bar/NavBar';
+import { LinkFormPage } from './LinkForm';
 import { bindActionCreators } from 'redux';
+import './HomePage.scss';
 
 import linkActions from '../actions/LinkActions';
 import authActions from '../actions/AuthActions';
@@ -15,6 +18,7 @@ class Home extends React.Component {
         this.handleFbLogin = this.handleFbLogin.bind(this);
         this.handleFbLogout = this.handleFbLogout.bind(this);
         this.likeLink = this.likeLink.bind(this);
+        this.deleteLink = this.deleteLink.bind(this);
     }
     componentDidMount() {
         this.props.actions.getLinks();
@@ -54,9 +58,18 @@ class Home extends React.Component {
         this.props.authActions.logout();
     }
 
-    likeLink(id, e) {
-        console.log(e.target.checked);
-        if(e.target.checked) this.props.actions.likeLink(id);
+    likeLink(link, e) {
+        if(e.target.checked) {
+            this.props.actions.likeLink(link);
+        } else {
+            this.props.actions.unLikeLink(link);
+        }
+    }
+
+    deleteLink(id) {
+        if(id) {
+            this.props.actions.deleteLink(id);
+        }
     }
 
     handleFbLogin() {
@@ -69,12 +82,26 @@ class Home extends React.Component {
     render() {
         const { links } = this.props;
         return (
-            <div>
-                {!this.props.auth.loggedIn && <button onClick={e => this.handleFbLogin(e)}>login</button>}
-                {this.props.auth.loggedIn && <button onClick={e => this.handleFbLogout(e)}>logout</button>}
-                {links.links.length > 0 && links.links.map((link) => {
-                    return (<LinkCard key={link.id} link={link} like={this.likeLink}></LinkCard>);
-                })}
+            <div className='home-page'>
+                <NavBar>
+                    {!this.props.auth.loggedIn && <button className='fb-button' onClick={e => this.handleFbLogin(e)}>login</button>}
+                    {this.props.auth.loggedIn && <button className='fb-button' onClick={e => this.handleFbLogout(e)}>logout</button>}
+                    { this.props.auth.loggedIn && <LinkFormPage />}
+                </NavBar>
+                <div className='container-fluid'>
+
+                    {links.links.length > 0 && links.links.map((linkGroup) => {
+                        return (<div key={linkGroup.date}>
+                            <span className='group-date__span'>{linkGroup.date}</span>
+                            {linkGroup.links.length > 0 && linkGroup.links.map((link)=> {
+                            return(<LinkCard key={link.id} link={link} like={this.likeLink} deleteLink={this.deleteLink} showLike={this.props.auth.loggedIn}></LinkCard>);
+                        })}
+                        </div>);
+                        
+                        
+                    })
+                }
+                </div>
             </div>
         );
     }

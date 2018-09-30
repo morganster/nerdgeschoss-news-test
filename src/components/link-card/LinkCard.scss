@@ -1,18 +1,27 @@
-.card{
+.link-card{
     border-radius: 3px;
     border: 1px solid #ccc;
-    padding: 2rem;
+    padding: 1rem 1.5rem;
     margin-bottom: 1rem;
-    & .card-header{
-        font-size: 1.5em;
-        border-bottom: 1px solid #ccc;
-    }
-    & .card-body{
-        padding-top: 1rem;
+    position: relative;
+    & .link-card-header{
         font-size: 1em;
+        border-bottom: 1px solid #ccc;
+        &__title{
+            margin-left: 2rem;
+        }
     }
-    & .card-image{
+    & .link-card-body{
+        padding-top: 1rem;
+        font-size: 0.8em;
+    }
+    & .link-card-image{
         width: 5rem;
         border-radius: 0.3rem;
+    }
+    &__like-btn{
+        position: absolute;
+        top: 0.5rem;
+        left: 0.5rem;
     }
 }

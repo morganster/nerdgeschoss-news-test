@@ -25,7 +25,7 @@
         "no-console": ["warn", { "allow": ["warn"] }],
         "no-empty-function": "error",
         "no-lone-blocks": "error",
-        "no-magic-numbers": ["error", { "ignoreArrayIndexes": true, "enforceConst": true , "ignore": [0,1]}],
+        "no-magic-numbers": ["error", { "ignoreArrayIndexes": true, "enforceConst": true , "ignore": [0,1,-1]}],
         "camelcase": "error",
         "jsx-quotes": ["error", "prefer-single"],
         "max-depth": ["error", 4]

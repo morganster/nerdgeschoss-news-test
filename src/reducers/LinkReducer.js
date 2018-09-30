@@ -1,5 +1,9 @@
 import linkConstants from '../constants/LinkConstants';
 import * as _ from 'lodash';
+let moment = require("moment");
+if ("default" in moment) {
+    moment = moment["default"];
+}
 
 const initialState = {
     requesting: false,
@@ -8,6 +12,12 @@ const initialState = {
 };
 
 export function links(state = initialState, action) {
+    let grIndex = '';
+    let index = '';
+    function likeIndex(){
+        grIndex = _.findIndex(state.links , {date: moment(action.like.link.created_at).format('DD-MM-Y')});
+        index = _.findIndex(state.links[grIndex].links,{id:action.like.link.id});
+    }
     switch (action.type) {
         case linkConstants.GET_ALL_REQUEST:
             return { ...state, ...{
@@ -16,7 +26,11 @@ export function links(state = initialState, action) {
         case linkConstants.GET_ALL_SUCCESS:
             return { ...state, ...{
                 requesting: false,
-                links: action.links.data
+                links: _.chain(_.orderBy(action.links.data,['like_count'],['desc']))
+                .groupBy(x => moment(x.created_at).format('DD-MM-Y'))
+                .map((value, key) => ({date: key, links: value}))
+                .orderBy(['date'],['desc'])
+                .value()
             }};
         case linkConstants.GET_ALL_FAILURE:
             return { ...state,...{
@@ -28,7 +42,8 @@ export function links(state = initialState, action) {
                 requesting: true,
            }};
         case linkConstants.LIKE_SUCCESS:
-            state.links[_.findKey(state.links, {id:action.like.id})].liked = true;
+            likeIndex();
+             state.links[grIndex].links[index].liked = true;
             return { ...state, ...{
                 requesting: false,
                 links:  state.links
@@ -42,7 +57,8 @@ export function links(state = initialState, action) {
                 requesting: true,
            }};
         case linkConstants.UNLIKE_SUCCESS:
-            state.links[action.link].liked = false;
+            likeIndex();
+            state.links[grIndex].links[index].liked = false;
             return { ...state, ...{
                 requesting: false,
                 links: state.links
@@ -61,6 +77,18 @@ export function links(state = initialState, action) {
                 link: action.links.data
             }};
         case linkConstants.GET_FAILURE:
+            return { ...state,...{
+                requesting: false,
+            }};
+        case linkConstants.DELETE_REQUEST:
+            return { ...state, ...{
+                requesting: true,
+           }};
+        case linkConstants.DELETE_SUCCESS:
+            return { ...state, ...{
+                requesting: false,
+            }};
+        case linkConstants.DELETE_FAILURE:
             return { ...state,...{
                 requesting: false,
             }};

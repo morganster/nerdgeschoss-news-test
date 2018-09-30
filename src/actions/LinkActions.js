@@ -66,50 +66,6 @@ function getLink(id) {
 
 function saveLink(params) {
 
-    return (dispatch) => {
-        dispatch(request());
-
-        axios.post(linksApiUrl, params)
-            .then(
-                links => {
-                    dispatch(success(links));
-                },
-                error => {
-                    dispatch(failure(error));
-                });
-    };
-
-    function request(links) { return { type: linkConstants.GET_ALL_REQUEST, links }; }
-
-    function success(links) { return { type: linkConstants.GET_ALL_SUCCESS, links }; }
-
-    function failure(error) { return { type: linkConstants.GET_ALL_FAILURE, error }; }
-}
-
-function deleteLink(id) {
-
-    return (dispatch) => {
-        dispatch(request());
-
-        axios.delete(`${linksApiUrl}/${id}`)
-            .then(
-                links => {
-                    dispatch(success(links));
-                },
-                error => {
-                    dispatch(failure(error));
-                });
-    };
-
-    function request(links) { return { type: linkConstants.GET_ALL_REQUEST, links }; }
-
-    function success(links) { return { type: linkConstants.GET_ALL_SUCCESS, links }; }
-
-    function failure(error) { return { type: linkConstants.GET_ALL_FAILURE, error }; }
-}
-
-function likeLink(id) {
-    console.log('like a link',id);
     return (dispatch, getState) => {
         const config = {
             headers: {
@@ -119,10 +75,68 @@ function likeLink(id) {
 
         dispatch(request());
 
-        axios.post(`${linksApiUrl}/${id}/like`,null,config)
+        axios.post(linksApiUrl, params, config)
+            .then(
+                links => {
+                    dispatch(success(links));
+                    dispatch(getLinks());
+                },
+                error => {
+                    dispatch(failure(error));
+                });
+    };
+
+    function request(link) { return { type: linkConstants.SAVE_REQUEST, link }; }
+
+    function success(link) { return { type: linkConstants.SAVE_SUCCESS, link }; }
+
+    function failure(error) { return { type: linkConstants.SAVE_FAILURE, error }; }
+}
+
+function deleteLink(id) {
+
+    return (dispatch, getState) => {
+        const config = {
+            headers: {
+                Authorization:`bearer ${getState().auth.bearer}`
+            }
+        };
+
+        dispatch(request());
+
+        axios.delete(`${linksApiUrl}/${id}`, config)
+            .then(
+                deletedLink => {
+                    dispatch(success(deletedLink));
+                    dispatch(getLinks());
+                },
+                error => {
+                    dispatch(failure(error));
+                });
+    };
+
+    function request(deletedLink) { return { type: linkConstants.DELETE_REQUEST, deletedLink }; }
+
+    function success(deletedLink) { return { type: linkConstants.DELETE_SUCCESS, deletedLink }; }
+
+    function failure(error) { return { type: linkConstants.DELETE_FAILURE, error }; }
+}
+
+function likeLink(link) {
+    console.log(link);
+    return (dispatch, getState) => {
+        const config = {
+            headers: {
+                Authorization:`bearer ${getState().auth.bearer}`
+            }
+        };
+
+        dispatch(request());
+
+        axios.post(`${linksApiUrl}/${link.id}/like`,null,config)
             .then(
                 data => {
-                    dispatch(success({data, id}));
+                    dispatch(success({data, link}));
                 },
                 error => {
                     dispatch(failure(error));
@@ -136,24 +150,29 @@ function likeLink(id) {
     function failure(error) { return { type: linkConstants.LIKE_FAILURE, error }; }
 }
 
-function unLikeLink(id) {
+function unLikeLink(link) {
 
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        const config = {
+            headers: {
+                Authorization:`bearer ${getState().auth.bearer}`
+            }
+        };
         dispatch(request());
 
-        axios.delete(`${linksApiUrl}/${id}/like`)
+        axios.delete(`${linksApiUrl}/${link.id}/like`, config)
             .then(
-                links => {
-                    dispatch(success(links));
+                data => {
+                    dispatch(success({data, link}));
                 },
                 error => {
                     dispatch(failure(error));
                 });
     };
 
-    function request(links) { return { type: linkConstants.GET_ALL_REQUEST, links }; }
+    function request(like) { return { type: linkConstants.UNLIKE_REQUEST, like }; }
 
-    function success(links) { return { type: linkConstants.GET_ALL_SUCCESS, links }; }
+    function success(like) { return { type: linkConstants.UNLIKE_SUCCESS, like }; }
 
-    function failure(error) { return { type: linkConstants.GET_ALL_FAILURE, error }; }
+    function failure(error) { return { type: linkConstants.UNLIKE_FAILURE, error }; }
 }

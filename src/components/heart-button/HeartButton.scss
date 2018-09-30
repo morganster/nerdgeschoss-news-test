@@ -30,7 +30,7 @@ $openheart: '\f08a';
     &__toggle-heart {
         $primary: #F00;
         $secondary: #888;
-        $size: 30px;
+        $size: 20px;
       
         visibility: hidden;
         
@@ -43,6 +43,8 @@ $openheart: '\f08a';
         &:checked + label:before {    
           content: $heart;
           color: $primary;
+          will-change: font-size;
+          animation: heart 1s cubic-bezier(.17, .89, .32, 1.49);
         }
         & + label:before {
           @include box-style($size);
