@@ -1,5 +1,5 @@
 {
-  "name": "react-redux-starter",
+  "name": "nerdgeschoss-news",
   "version": "0.1.0",
   "description": "just a template to start a react redux app",
   "main": "index.js",
@@ -8,10 +8,10 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "lint": "eslint --env browser ./src/*.js",
+    "dev": "webpack-dev-server  --env=dev --config webpack.config.js",
     "start": "webpack-dev-server  --env=dev --config webpack.config.js",
     "build:dev": "webpack --env=dev --mode development --config webpack.config.js --progress --profile --colors",
-    "build:prod": "webpack --env=prod --optimize-minimize --mode production --config webpack.config.js --progress --profile --colors",
-    "cypress:open": "cypress open"
+    "build:prod": "webpack --env=prod --optimize-minimize --mode production --config webpack.config.js --progress --profile --colors"
   },
   "keywords": [
     "react",
