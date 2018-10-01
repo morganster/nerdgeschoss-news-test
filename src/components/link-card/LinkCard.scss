@@ -8,22 +8,32 @@
         font-size: 1em;
         border-bottom: 1px solid #ccc;
         &__title{
-            margin-left: 2rem;
+            margin-left: 0.5rem;
+            color: #333;
+            vertical-align: bottom;
         }
     }
+
     & .link-card-body{
         font-size: 0.8em;
         &__paragraph{
             margin:0;
         }
     }
+
     & .link-card-image{
         width: 5rem;
+        max-height: 5rem;
         border-radius: 0.3rem;
     }
+
     &__like-btn{
         position: absolute;
         top: 0.5rem;
         left: 0.5rem;
+    }
+
+    &__content.link-card__content{
+        margin-left: 0.5rem;
     }
 }

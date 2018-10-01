@@ -8,10 +8,10 @@ const LinkCard = ({link, like, deleteLink, showLike}) => {
     return (<div className='link-card' data-qa='link-card'>
                 {link.owned && <button className='btn btn-danger btn-sm float-right' onClick={ e => deleteLink(link.id, e)}><i className='fa fa-times'></i></button>}
                             { showLike && <HeartButton className='float-left' link={link} liked={link.liked} doLike={like} />}
-                <div className='row'>
-                    <div className='col-11'>
+                <div className='row link-card__content'>
+                    <div className='col-12'>
                         <div className='link-card-header'>
-
+                            {link.image_url!=='' && <img className='link-card-image' src={link.image_url} alt={link.title}/>}
                             <a className='link-card-header__title' target='_blank' rel='noopener noreferrer' href={fixUrl(link.url)}>
                                 {link.title}
                             </a>
@@ -24,9 +24,7 @@ const LinkCard = ({link, like, deleteLink, showLike}) => {
                             <span>Published at: {link.created_at}</span>
                         </div>
                     </div>
-                    <div className='col-1'>
-                        <img className='link-card-image' src={link.image_url} alt={link.title}/>
-                    </div>
+                    
                 </div>
             </div>);
 };

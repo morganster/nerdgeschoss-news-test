@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import LinkCard from '../components/link-card/LinkCard';
 import NavBar from '../components/nav-bar/NavBar';
+import Loader from '../components/loader/Loader';
 import { LinkFormPage } from './LinkForm';
 import { bindActionCreators } from 'redux';
 import './HomePage.scss';
@@ -72,10 +73,12 @@ class Home extends React.Component {
         }
     }
 
-    handleFbLogin() {
+    handleFbLogin(event) {
+        event.preventDefault();
         window.FB.login(() => console.log('login in'), {scope: 'public_profile,email'});
     }
-    handleFbLogout() {
+    handleFbLogout(event) {
+        event.preventDefault();
         window.FB.logout();
     }
 
@@ -91,7 +94,6 @@ class Home extends React.Component {
                     </form>
                 </NavBar>
                 <div className='container-fluid'>
-
                     {links.links.length > 0 && links.links.map((linkGroup) => {
                         return (<div key={linkGroup.date}>
                             <span className='group-date__span'>{linkGroup.date}</span>
@@ -104,6 +106,7 @@ class Home extends React.Component {
                     })
                 }
                 </div>
+                {this.props.links && this.props.links.requesting && <Loader />}
             </div>
         );
     }

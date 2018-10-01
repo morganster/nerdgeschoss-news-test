@@ -22,7 +22,7 @@ export function links(state = initialState, action) {
             return { ...state, ...{
                 requesting: false,
                 links: _.chain(_.orderBy(action.links.data,['like_count'],['desc']))
-                .groupBy(x => moment(x.created_at).format('DD-MM-Y'))
+                .groupBy(x => moment(x.created_at).format('Y-MM-DD'))
                 .map((value, key) => ({date: key, links: value}))
                 .orderBy(['date'],['desc'])
                 .value()
