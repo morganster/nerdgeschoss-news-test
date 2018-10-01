@@ -9,7 +9,8 @@
     "test:coverage": "jest --coverage",
     "lint": "eslint --env browser ./src/*.js",
     "dev": "webpack-dev-server  --env=dev --config webpack.config.js",
-    "start": "npm run build:prod & node server.js",
+    "start": "node server.js",
+    "postinstall": "npm install & npm run build:prod",
     "build:dev": "webpack --env=dev --mode development --config webpack.config.js --progress --profile --colors",
     "build:prod": "webpack --env=prod --optimize-minimize --mode production --config webpack.config.js --progress --profile --colors"
   },
